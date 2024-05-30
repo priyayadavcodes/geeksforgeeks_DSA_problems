@@ -24,7 +24,9 @@ class Solution:
         for node in adj[start_node]:
             if vis[node] == 0:
                 self.dfs(node,vis,adj,stack)
+                
         stack.put(start_node)
+        
         
         
 
