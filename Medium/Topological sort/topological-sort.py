@@ -1,33 +1,35 @@
-from queue import LifoQueue
+from queue import Queue
 
 class Solution:
     
     #Function to return list containing vertices in Topological order.
     def topoSort(self, V, adj):
-        vis = [0 for i in range(V)]
-        stack = LifoQueue(maxsize=V)
+        indegree = [0 for i in range(V)]
+        for nodes in adj:
+            for node in nodes:
+                indegree[node] += 1
+        
+        q = Queue(maxsize=V)
         ls = []
-        for node in range(V):
-            if vis[node] == 0:
-                self.dfs(node,vis,adj,stack)
-                
-        while stack.empty() == False:
-            a = stack.get()
-            ls.append(a)
-            
-            
+        
+        # Adding all vertices with 0 indegree to the queue
+        for i in range(V):
+            if indegree[i] == 0:
+                q.put(i)
+        
+        # Processing the nodes
+        while not q.empty():
+            u = q.get()
+            ls.append(u)
+            for node in adj[u]:
+                indegree[node] -= 1
+                if indegree[node] == 0:
+                    q.put(node)
         return ls
-                
-    def dfs(self,start_node,vis,adj,stack):
-        vis[start_node] = 1
-        
-        for node in adj[start_node]:
-            if vis[node] == 0:
-                self.dfs(node,vis,adj,stack)
-                
-        stack.put(start_node)
-        
-        
+
+
+
+            
         
 
 
